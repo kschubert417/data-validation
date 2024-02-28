@@ -1,7 +1,10 @@
 import csv
 import sqlite3
 
-from . import sqlgen
+try:
+    from . import sqlgen
+except:
+    import sqlgen
 
 # basic information for table
 tableinfo = {'table_name':'MASTERFILE',
@@ -10,7 +13,7 @@ tableinfo = {'table_name':'MASTERFILE',
 
 tableconstraints = {'pk':['ITEM'], # primary key of table
                     'fk':['PRODFAM.PRODFAM'], # column that contains reference to another table
-                    'av':['ITEM_TYPE = (0,1,2,3,4)'] # allowed values for columns, write in SQL
+                    'av':{'ITEM_TYPE': '(0,1,2,3,4)'} # allowed values for columns
                     }
 
 def createtable(dbfile):
@@ -67,17 +70,36 @@ def basiccheck(dbfile):
     # print("Checking basic masterfile data")
     con = sqlite3.connect(dbfile)
     cur = con.cursor()
-    sql = [sqlgen.pkcheck(tableinfo["table_name"], tableinfo['pk'], "Duplicate item number"),
-           ('INSERT INTO SUMMARY_STATS ([TABLE], [COLUMN], MESSAGE, COUNT)\n'+
+    sql = [sqlgen.pkcheck(tableinfo["table_name"], tableinfo['pk'], "Duplicate item number")]+sqlgen.checkvalues(tableinfo["table_name"], tableconstraints['av'])+[('INSERT INTO SUMMARY_STATS ([TABLE], [COLUMN], MESSAGE, COUNT)\n'+
             'SELECT \'MASTERFILE\', \'ITEM_TYPE\', \'Item type that do not exist\', COUNT(*)\n'+
             'FROM MASTERFILE\n'+
             'WHERE ITEM_TYPE NOT IN (0,1,2,3,4)')]
 
+    print(sql)
     # print(len(sql))
     for row in sql:
-        # print(row)
-        cur.execute(row)
+        print(row)
+        # cur.execute(row)
     
     con.commit()
     con.close()
+    
+
+
+
+# Testing ================================
+if __name__ == "__main__":
+    # running functions
+    print("--SQL SCRIPT TO CREATE TABLE =====================")
+    print(createtable(testtable["table_name"], testtable["columns"]))
+    print("\n--SQL SCRIPT TO INSERT DATA =====================")
+    print(instertdata(testtable["table_name"], testtable["columns"]))
+    print("\n--SQL SCRIPT TO CHECK PRIMARY KEY =====================")
+    print(pkcheck(testtable["table_name"], testtableconstraints['pk'], "test_test_test"))
+    print("\n--SQL SCRIPT TO DROP TABLE =====================")
+    print(droptable(testtable["table_name"]))
+    print("\n--SQL SCRIPT TO SEE IF VALUES FOR COLUMNS ADHERE TO RULES =====================")
+    cv = checkvalues(testtable["table_name"], testtableconstraints['av'])
+    for i in cv:
+        print(i)
     

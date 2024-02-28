@@ -9,13 +9,38 @@ def pkcheck(table, pk, message):
     message: error message to provide additional information
     '''
     sql = (f'INSERT INTO {sumstats["table"]} {sumstats["columns"]}\n'+
-    f'SELECT \'{table}\',\'{pk[0]}\',\'{message}\',COUNT(DISTINCT {pk[0]})\n'+
-    f'FROM {table}\n'+
-    f'GROUP BY {pk[0]}\n'+
-    f'HAVING COUNT(*) > 1')
+            f'SELECT \'{table}\',\'{pk[0]}\',\'{message}\',COUNT(DISTINCT {pk[0]})\n'+
+            f'FROM {table}\n'+
+            f'GROUP BY {pk[0]}\n'+
+            f'HAVING COUNT(*) > 1')
 
     # print(sql)
     return(sql)
+
+def checkvalues(table, av):
+    '''
+    table: name of table
+    av: allowed values for column, ie: item type should be 'ITEM_TYPE = (0,1,2,3,4)'
+    message: error message to provide additional information
+    '''
+
+    sqlist = []
+    message = ''
+    for col in av:
+        
+        message = 'INVALID ' + col + ' VALUES'
+        # print('invalid ' + col)
+        # print(av[col])
+
+        sql = (f'INSERT INTO {sumstats["table"]} {sumstats["columns"]}\n'+
+            f'SELECT \'{table}\',\'{col}\',\'{message}\', COUNT(*)\n'+
+            f'FROM {table}\n'+
+            f'WHERE {col} NOT IN {av[col]}\n')
+        
+        sqlist.append(sql)
+
+    # print(sql)
+    return(sqlist)
 
 def droptable(table):
     '''
@@ -81,7 +106,8 @@ if __name__ == "__main__":
 
     testtableconstraints = {'pk':['ITEM'], # primary key of table
                            'fk':['PRODFAM.PRODFAM'], # column that contains reference to another table
-                           'av':['ITEM_TYPE = (0,1,2,3,4)'] # allowed values for columns, write in SQL
+                           'av':{'ITEM_TYPE': '(0,1,2,3,4)',
+                                 'PRODFAM': '(\'HI\', \'HI2\', \'HI3\')'} # allowed values for columns, write in SQL
                            }
     
     # running functions
@@ -93,5 +119,8 @@ if __name__ == "__main__":
     print(pkcheck(testtable["table_name"], testtableconstraints['pk'], "test_test_test"))
     print("\n--SQL SCRIPT TO DROP TABLE =====================")
     print(droptable(testtable["table_name"]))
-    
+    print("\n--SQL SCRIPT TO SEE IF VALUES FOR COLUMNS ADHERE TO RULES =====================")
+    cv = checkvalues(testtable["table_name"], testtableconstraints['av'])
+    for i in cv:
+        print(i)
     
