@@ -1,8 +1,7 @@
 import os
-import sqlite3
 
 from tables import dbsetup
-from tables import masterfile
+from tables import masterfile, product_family
 
 # print(os.listdir())
 # print(os.getcwd())
@@ -15,5 +14,9 @@ dbsetup.cleardb(dbfile)
 dbsetup.dbsetup(dbfile)
 
 masterfile.createtable(dbfile)
+product_family.createtable(dbfile)
+
 masterfile.insertdata(mf, dbfile)
+product_family.insertdata(prodfam, dbfile)
+
 masterfile.basiccheck(dbfile)

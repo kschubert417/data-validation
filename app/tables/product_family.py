@@ -3,31 +3,18 @@ import sqlite3
 
 try:
     from . import sqlgen
-    from . import product_family
+    from . import masterfile
 except:
     import sqlgen
-    import product_family
-
-print(product_family.tableinfo)
-print(product_family.tableconstraints)
-
-'''class masterfile:
-    def __init__(self):
-        self.tableinfo = {'table_name':'MASTERFILE',
-                          'columns':['ITEM','DESCRIPTION','ITEM_TYPE','PRODFAM']}
-
-        self.tableconstraints = {'pk':['ITEM'], # primary key of table
-                                 'fk':['PRODFAM.PRODFAM'], # column that contains reference to another table
-                                 'av':{'ITEM_TYPE': '(0,1,2,3,4)'} # allowed values for columns
-                                 }'''
+    import masterfile
 
 # basic information for table
-tableinfo = {'table_name':'MASTERFILE',
-             'columns':['ITEM','DESCRIPTION','ITEM_TYPE','PRODFAM']}
+tableinfo = {'table_name':'PRODFAM',
+             'columns':['PRODFAM','DESCRIPTION']}
 
 tableconstraints = {'pk':['ITEM'], # primary key of table
                     'fk':['PRODFAM.PRODFAM'], # column that contains reference to another table
-                    'av':{'ITEM_TYPE': '(0,1,2,3,4)'} # allowed values for columns
+                    'av':{} # allowed values for columns
                     }
 
 def createtable(dbfile):

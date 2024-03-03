@@ -23,7 +23,7 @@ def cleardb(dbfile):
     listdelete = []
 
     for i in cur:
-        print(i[0])
+        # print(i[0])
         listdelete.append(i[0])
 
     for i in listdelete:
