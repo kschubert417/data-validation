@@ -10,6 +10,13 @@ def pkcheck(table, pk, message):
     table: name of table
     pk: primary key of table
     message: error message to provide additional information
+
+    EXAMPLE:
+        INSERT INTO SUMMARY_STATS ([TABLE], [COLUMN], [MESSAGE], [COUNT])
+        SELECT 'MASTERFILE', 'ITEM', 'MESSAGE', COUNT(DISTINCT(ITEM))
+        FROM MASTERFILE
+        GROUP BY ITEM
+        HAVING COUNT(*) > 1
     '''
     sql = (f'INSERT INTO {sumstats["table"]} {sumstats["columns"]}\n'+
             f'SELECT \'{table}\',\'{pk[0]}\',\'{message}\',COUNT(DISTINCT {pk[0]})\n'+
@@ -115,14 +122,14 @@ if __name__ == "__main__":
                            }
     
     # running functions
-    '''print("--SQL SCRIPT TO CREATE TABLE =====================")
+    print("--SQL SCRIPT TO CREATE TABLE =====================")
     print(createtable(testtable["table_name"], testtable["columns"]))
     print("\n--SQL SCRIPT TO INSERT DATA =====================")
     print(instertdata(testtable["table_name"], testtable["columns"]))
     print("\n--SQL SCRIPT TO CHECK PRIMARY KEY =====================")
     print(pkcheck(testtable["table_name"], testtableconstraints['pk'], "test_test_test"))
     print("\n--SQL SCRIPT TO DROP TABLE =====================")
-    print(droptable(testtable["table_name"]))'''
+    print(droptable(testtable["table_name"]))
     print("\n--SQL SCRIPT TO SEE IF VALUES FOR COLUMNS ADHERE TO RULES =====================")
     cv = checkvalues(testtable["table_name"], testtableconstraints['av'])
     print(cv)

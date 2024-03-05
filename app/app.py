@@ -8,6 +8,7 @@ from tables import masterfile, product_family
 # print(os.path.join(os.getcwd(), 'app', 'MOCK_DATA.csv'))
 mf = os.path.join(os.getcwd(), 'app', 'masterdata.csv')
 prodfam = os.path.join(os.getcwd(), 'app', 'prodfam_data.csv')
+
 dbfile = os.path.join(os.getcwd(), 'app', 'schema.db')
 
 dbsetup.cleardb(dbfile)

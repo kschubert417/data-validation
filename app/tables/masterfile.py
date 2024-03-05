@@ -20,18 +20,20 @@ print(product_family.tableconstraints)
         # Constraints for table
         # Primary key
         self.pk = ['ITEM']
-        # foreign key
-        self.fk = ['PRODFAM.PRODFAM']
         # Allowed values
         self.av = {'ITEM_TYPE': '(0,1,2,3,4)'}
+        # foreign key
+        self.fk = ['PRODFAM.PRODFAM']
 
         self.fk = {}
-        self.tableconstraints = {'pk':['ITEM'], # primary key of table
-                                 'fk':['PRODFAM.PRODFAM'], # column that contains reference to another table
-                                 'av':{'ITEM_TYPE': '(0,1,2,3,4)'} # allowed values for columns
-                                 }
 
-        # method to validate foreign keys
+        # Methods for class objects
+        ## Create table
+        ## Insert data
+        ## Basic data check
+        #### Validate primary keys
+        #### Validate allowed values for columns
+        ## Validate foreign keys
         def validate_fk(self, fk):
 
         '''
@@ -60,7 +62,7 @@ def createtable(dbfile):
 
     con = sqlite3.connect(dbfile)
     cur = con.cursor()
-    
+
     sql = [sqlgen.droptable(tableinfo['table_name']),
            sqlgen.createtable(tableinfo['table_name'], tableinfo['columns'])]
 
@@ -72,7 +74,7 @@ def createtable(dbfile):
 
     # print('Masterfile Created')
 
-def insertdata (filename, dbfile):
+def insertdata(filename, dbfile):
     con = sqlite3.connect(dbfile)
     cur = con.cursor()
 
