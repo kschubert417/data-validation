@@ -1,6 +1,9 @@
 sumstats = {"table": "SUMMARY_STATS",
             "columns": "([TABLE], [COLUMN], [MESSAGE], [COUNT])"}
 
+# SQL Builder Class, can run SQL also
+
+
 # Document to generate SQL scripts to be executed
 def pkcheck(table, pk, message):
     '''

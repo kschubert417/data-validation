@@ -13,13 +13,28 @@ print(product_family.tableconstraints)
 
 '''class masterfile:
     def __init__(self):
-        self.tableinfo = {'table_name':'MASTERFILE',
-                          'columns':['ITEM','DESCRIPTION','ITEM_TYPE','PRODFAM']}
+        # yml file to load all appropriate data
+        self.tblname = 'MASTERFILE'
+        self.tblcols = ['ITEM','DESCRIPTION','ITEM_TYPE','PRODFAM']
 
+        # Constraints for table
+        # Primary key
+        self.pk = ['ITEM']
+        # foreign key
+        self.fk = ['PRODFAM.PRODFAM']
+        # Allowed values
+        self.av = {'ITEM_TYPE': '(0,1,2,3,4)'}
+
+        self.fk = {}
         self.tableconstraints = {'pk':['ITEM'], # primary key of table
                                  'fk':['PRODFAM.PRODFAM'], # column that contains reference to another table
                                  'av':{'ITEM_TYPE': '(0,1,2,3,4)'} # allowed values for columns
-                                 }'''
+                                 }
+
+        # method to validate foreign keys
+        def validate_fk(self, fk):
+
+        '''
 
 # basic information for table
 tableinfo = {'table_name':'MASTERFILE',
