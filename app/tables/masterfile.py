@@ -133,7 +133,11 @@ if __name__ == "__main__":
     print("\n--SQL SCRIPT TO DROP TABLE =====================")
     print(droptable(testtable["table_name"]))
     print("\n--SQL SCRIPT TO SEE IF VALUES FOR COLUMNS ADHERE TO RULES =====================")
-    '''cv = sqlgen.checkvalues(tableinfo["table_name"], tableconstraints['av'])
+    '''
+    cv = sqlgen.checkvalues(tableinfo["table_name"], tableconstraints['av'])
     for i in cv:
-        print(i)'''
+        print(i)
+    '''
+
+
     
