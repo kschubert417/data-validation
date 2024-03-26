@@ -140,38 +140,6 @@ class masterfile:
 
         '''
 
-# basic information for table
-tableinfo = {'table_name':'MASTERFILE',
-             'columns':['ITEM','DESCRIPTION','ITEM_TYPE','PRODFAM']}
-
-tableconstraints = {'pk':['ITEM'], # primary key of table
-                    'fk':['PRODFAM.PRODFAM'], # column that contains reference to another table
-                    'av':{'ITEM_TYPE': '(0,1,2,3,4)'} # allowed values for columns
-                    }
-
-
-
-
-
-def basiccheck(dbfile):
-    # print("Checking basic masterfile data")
-    con = sqlite3.connect(dbfile)
-    cur = con.cursor()
-
-    # sql statements to execute
-    sql = [sqlgen.pkcheck(mf.tblname, mf.pk, "Duplicate item number"),
-           sqlgen.checkvalues(mf.tblname, mf.av)]
-
-    # print(sql)
-    # print(len(sql))
-    for row in sql:
-        # print(row)
-        cur.execute(row)
-    
-    con.commit()
-    con.close()
-    return "Basic Check complete"
-
 
 
 
