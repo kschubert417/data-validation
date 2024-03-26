@@ -17,6 +17,21 @@ tableconstraints = {'pk':['ITEM'], # primary key of table
                     'av':{} # allowed values for columns
                     }
 
+
+class product_family:
+    def __init__(self) -> None:
+        pass
+
+    
+    def createtable(self, dbfile):
+        pass
+
+    def insertdata(self, filename, dbfile):
+        pass
+
+
+
+#-----------------------------------------------------------------------    
 def createtable(dbfile):
     """Short summary.
     Will create table in database to insert data into
