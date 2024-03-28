@@ -14,7 +14,7 @@ tableinfo = {'table_name':'PRODFAM',
 
 tableconstraints = {'pk':['ITEM'], # primary key of table
                     'fk':['PRODFAM.PRODFAM'], # column that contains reference to another table
-                    'av':{} # allowed values for columns
+                    'av':{'PRODFAM':('PRODUCT_FAMILY_1','PRODUCT_FAMILY_2','PRODUCT_FAMILY_3','PRODUCT_FAMILY_4','PRODUCT_FAMILY_5')} # allowed values for columns
                     }
 
 
@@ -104,7 +104,8 @@ class product_family:
         con.commit()
         con.close()
 
-
+#-------------------------------------------------------------------------------------------------------------------
+# Class definition end
 
 
 
@@ -115,6 +116,7 @@ if __name__ == "__main__":
     # print(dbfile)
     # running functions
     pf = product_family()
+ 
     print("--SQL SCRIPT TO CREATE TABLE =====================")
     print(pf.createtable(dbfile))
     print("\n--SQL SCRIPT TO INSERT DATA =====================")
@@ -123,7 +125,7 @@ if __name__ == "__main__":
     print(sqlgen.pkcheck(pf.tblname,pf.pk, "test_test_test"))
     '''
     print("\n--SQL SCRIPT TO DROP TABLE =====================")
-    print(droptable(testtable["table_name"]))
+    print(sqlgen.droptable(pf.tblname))
     print("\n--SQL SCRIPT TO SEE IF VALUES FOR COLUMNS ADHERE TO RULES =====================")
     '''
     '''cv = sqlgen.checkvalues(tableinfo["table_name"], tableconstraints['av'])
