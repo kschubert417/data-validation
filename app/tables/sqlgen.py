@@ -3,7 +3,6 @@ sumstats = {"table": "SUMMARY_STATS",
 
 # SQL Builder Class, can run SQL also
 
-
 # Document to generate SQL scripts to be executed
 def pkcheck(table, pk, message):
     '''
@@ -108,6 +107,10 @@ def checkvalues(table, av):
     return(sqlstr)
 
 
+def masterfile_join():
+    pass
+
+
 # Testing ================================
 if __name__ == "__main__":
     # setting up example test table
@@ -134,3 +137,12 @@ if __name__ == "__main__":
     cv = checkvalues(testtable["table_name"], testtableconstraints['av'])
     print(cv)
     
+
+
+'''
+--insert into SUMMARY_STATS('TABLE', 'COLUMN', 'MESSAGE', 'COUNT')
+select DISTINCT MASTERFILE.PRODFAM, Count(*) 
+from MASTERFILE
+LEFT JOIN PRODFAM on MASTERFILE.PRODFAM = PRODFAM.PRODFAM
+where PRODFAM.PRODFAM is NULL
+'''
