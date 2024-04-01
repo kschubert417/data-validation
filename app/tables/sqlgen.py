@@ -107,8 +107,8 @@ def checkvalues(table, av):
     return(sqlstr)
 
 
-def masterfile_join():
-    pass
+
+    
 
 
 # Testing ================================
@@ -144,5 +144,13 @@ if __name__ == "__main__":
 select DISTINCT MASTERFILE.PRODFAM, Count(*) 
 from MASTERFILE
 LEFT JOIN PRODFAM on MASTERFILE.PRODFAM = PRODFAM.PRODFAM
+where PRODFAM.PRODFAM is NULL
+'''
+
+'''
+insert into SUMMARY_STATS ([TABLE], [COLUMN], [MESSAGE], [COUNT])
+select 'MASTERFILE', 'PRODFAM', 'Invalid Values', count(MASTERFILE.PRODFAM)
+from MASTERFILE
+left join PRODFAM on MASTERFILE.PRODFAM = PRODFAM.PRODFAM
 where PRODFAM.PRODFAM is NULL
 '''

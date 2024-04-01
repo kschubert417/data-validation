@@ -3,14 +3,14 @@ import sqlite3
 
 try:
     from . import sqlgen
-    #from . import product_family
+    from . import product_family
 except:
     import sqlgen
-    #import product_family
+    import product_family
 
 #print(product_family.tableinfo)
 #print(product_family.tableconstraints)
-
+'''
 # basic information for table
 tableinfo = {'table_name':'MASTERFILE',
              'columns':['ITEM','DESCRIPTION','ITEM_TYPE','PRODFAM']}
@@ -19,7 +19,7 @@ tableconstraints = {'pk':['ITEM'], # primary key of table
                     'fk':['PRODFAM.PRODFAM'], # column that contains reference to another table
                     'av':{'ITEM_TYPE': '(0,1,2,3,4)'} # allowed values for columns
                     }
-
+'''
 class masterfile:
     def __init__(self):
         # yml file to load all appropriate data
@@ -72,7 +72,7 @@ class masterfile:
         con = sqlite3.connect(dbfile)
         cur = con.cursor()
 
-        sql = sqlgen.instertdata(tableinfo['table_name'], tableinfo['columns'])
+        sql = sqlgen.instertdata(self.tblname, self.tblcols)
         
         with open(filename) as file_obj:
             # Skip the header
@@ -109,10 +109,25 @@ class masterfile:
         con.commit()
         con.close()
         return 'Basic Check complete'
-    #---------------------------------------------------------------------------------------------------------
-    def validate_fk(self, fk):
-        pass
+    #--------------------------------------------------------------------------------------------------------
+    # Check foreign key
+    def fkcheck(self):
+        # Assuming column names are same for both the tables
+        print(self.fk)
+        for key in self.fk:
+            print(key)
+            sql = (f'insert into SUMMARY_STATS ([TABLE], [COLUMN], [MESSAGE], [COUNT])'+
+                f'select \'{self.tblname}\', \'{key.split('.')[1]}\', \'Invalid Values\', count({self.tblname}.{key.split('.')[1]})'+
+                f'from {self.tblname}'+
+                f'left join {key.split('.')[0]} on {self.tblname}.{key.split('.')[1]} = {key}' +
+                f'where {key} is NULL')
+            
+        return sql
+            
 
+
+
+    #--------------------------------------------------------------------------------------------------------
 '''class masterfile:
     def __init__(self):
         # yml file to load all appropriate data
@@ -168,11 +183,12 @@ if __name__ == "__main__":
     print(sqlgen.droptable(mf.tblname))
     print("\n--SQL SCRIPT TO SEE IF VALUES FOR COLUMNS ADHERE TO RULES =====================")
     '''
-    '''
-    cv = sqlgen.checkvalues(tableinfo["table_name"], tableconstraints['av'])
-    for i in cv:
-        print(i)
-    '''
+
+    print("\n--SQL SCRIPT TO CHECK FK ============================================")
+    print(mf.fk)
+    print(mf.fkcheck())
+    
+
 
 
     

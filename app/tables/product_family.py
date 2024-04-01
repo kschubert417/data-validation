@@ -3,20 +3,19 @@ import sqlite3
 
 try:
     from . import sqlgen
-    from . import masterfile
 except:
     import sqlgen
-    import masterfile
 
+'''
 # basic information for table
 tableinfo = {'table_name':'PRODFAM',
              'columns':['PRODFAM','DESCRIPTION']}
 
 tableconstraints = {'pk':['ITEM'], # primary key of table
                     'fk':['PRODFAM.PRODFAM'], # column that contains reference to another table
-                    'av':{'PRODFAM':('PRODUCT_FAMILY_1','PRODUCT_FAMILY_2','PRODUCT_FAMILY_3','PRODUCT_FAMILY_4','PRODUCT_FAMILY_5')} # allowed values for columns
+                    'av':{} # allowed values for columns
                     }
-
+'''
 
 class product_family:
     def __init__(self) -> None:
@@ -25,11 +24,11 @@ class product_family:
         self.tblcols = ['PRODFAM','DESCRIPTION']
         # Constraints for table
         # Primary key
-        self.pk = ['ITEM']
+        self.pk = ['PRODFAM']
         # Allowed values
-        self.av = {'ITEM_TYPE': '(0,1,2,3,4)'}
+        self.av = None
         # foreign key
-        self.fk = ['PRODFAM.PRODFAM']
+        self.fk = None
 
     #--------------------------------------------------------------------
     def createtable(self, dbfile):
@@ -92,13 +91,13 @@ class product_family:
         cur = con.cursor()
 
         # sql statements to execute
-        sql = [sqlgen.pkcheck(tableinfo["table_name"], tableconstraints['pk'], "Duplicate item number"),
-            sqlgen.checkvalues(tableinfo["table_name"], tableconstraints['av'])]
+        sql = [sqlgen.pkcheck(self.tblname, self.pk, "Duplicate item number")]
+            #sqlgen.checkvalues(self.tblname, self.av)]
 
         # print(sql)
         # print(len(sql))
         for row in sql:
-            # print(row)
+            print(row)
             cur.execute(row)
         
         con.commit()
@@ -123,6 +122,8 @@ if __name__ == "__main__":
     print(pf.insertdata(filename,dbfile))
     print("\n--SQL SCRIPT TO CHECK PRIMARY KEY =====================")
     print(sqlgen.pkcheck(pf.tblname,pf.pk, "test_test_test"))
+    print("\n--SQL for BASIC CHECKS ========================")
+    print(pf.basiccheck(dbfile))
     '''
     print("\n--SQL SCRIPT TO DROP TABLE =====================")
     print(sqlgen.droptable(pf.tblname))

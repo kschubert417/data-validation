@@ -13,7 +13,7 @@ dbfile = os.path.join(os.getcwd(), 'app', 'schema.db')
 
 dbsetup.cleardb(dbfile)
 dbsetup.dbsetup(dbfile)
-
+'''
 masterfile.createtable(dbfile)
 product_family.createtable(dbfile)
 
@@ -21,3 +21,4 @@ masterfile.insertdata(mf, dbfile)
 product_family.insertdata(prodfam, dbfile)
 
 masterfile.basiccheck(dbfile)
+'''
