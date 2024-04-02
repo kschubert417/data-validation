@@ -1,12 +1,14 @@
 import csv
 import sqlite3
+from tables import sqlgen
+# import sqlgen
 
-try:
+'''try:
     from . import sqlgen
     from . import product_family
 except:
     import sqlgen
-    import product_family
+    import product_family'''
 
 #print(product_family.tableinfo)
 #print(product_family.tableconstraints)
@@ -31,7 +33,8 @@ class masterfile:
         # Allowed values
         self.av = {'ITEM_TYPE': '(0,1,2,3,4)'}
         # foreign key
-        self.fk = ['PRODFAM.PRODFAM']
+        # {COLWITHFK:[FKTABLE,FKCOLUMN]}
+        self.fk = {'PRODFAM':['PRODFAM','PRODFAM']}
         
     #------------------------------------------------------------------------------------
     # Methods for class objects
@@ -111,21 +114,23 @@ class masterfile:
         return 'Basic Check complete'
     #--------------------------------------------------------------------------------------------------------
     # Check foreign key
-    def fkcheck(self):
+    def fkcheck(self, dbfile):
         # Assuming column names are same for both the tables
-        print(self.fk)
+        # print(self.fk)
         for key in self.fk:
-            print(key)
-            sql = (f'insert into SUMMARY_STATS ([TABLE], [COLUMN], [MESSAGE], [COUNT])'+
-                f'select \'{self.tblname}\', \'{key.split('.')[1]}\', \'Invalid Values\', count({self.tblname}.{key.split('.')[1]})'+
-                f'from {self.tblname}'+
-                f'left join {key.split('.')[0]} on {self.tblname}.{key.split('.')[1]} = {key}' +
-                f'where {key} is NULL')
-            
-        return sql
-            
+            con = sqlite3.connect(dbfile)
+            cur = con.cursor()
+            # print(key)
+            sql = (f'INSERT INTO SUMMARY_STATS ([TABLE], [COLUMN], [MESSAGE], [COUNT])\n'+
+                f'SELECT \'{self.tblname}\', \'{key}\', \'Invalid Values\', COUNT({self.tblname}.{key})\n'+
+                f'FROM {self.tblname}\n'+
+                f'LEFT JOIN {self.fk[key][0]} ON {self.tblname}.{key} = {self.fk[key][0]}.{self.fk[key][1]}\n' +
+                f'WHERE {self.fk[key][0]}.{self.fk[key][1]} IS NULL')
 
-
+            con.commit()
+            con.close()
+        return 'foreign keys checked'
+            
 
     #--------------------------------------------------------------------------------------------------------
 '''class masterfile:
@@ -162,7 +167,7 @@ class masterfile:
 if __name__ == "__main__":
     dbfile = 'app\schema.db'
     filename = 'app\masterdata.csv'
-    mf = masterfile()         # mf is object of class masterfile
+    mf = masterfile() # mf is object of class masterfile
 
     # print(dbfile)
     # running functions
@@ -171,24 +176,17 @@ if __name__ == "__main__":
     
     print("\n--SQL SCRIPT TO INSERT DATA =====================")
     print(mf.insertdata(filename, dbfile))
-    
-    
+
     print("\n--SQL SCRIPT TO CHECK PRIMARY KEY =====================")
     print(sqlgen.pkcheck(mf.tblname, mf.pk, "test_test_test"))
 
     print('\n--SQL SCRIPT FOR BASIC CHECKS =====================')
     print(mf.basiccheck(dbfile))
-    '''
+
     print("\n--SQL SCRIPT TO DROP TABLE =====================")
     print(sqlgen.droptable(mf.tblname))
+
     print("\n--SQL SCRIPT TO SEE IF VALUES FOR COLUMNS ADHERE TO RULES =====================")
-    '''
 
     print("\n--SQL SCRIPT TO CHECK FK ============================================")
-    print(mf.fk)
-    print(mf.fkcheck())
-    
-
-
-
-    
+    print(mf.fkcheck(dbfile))

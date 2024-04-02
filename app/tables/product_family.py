@@ -1,10 +1,11 @@
 import csv
 import sqlite3
+from tables import sqlgen
 
-try:
+'''try:
     from . import sqlgen
 except:
-    import sqlgen
+    import sqlgen'''
 
 '''
 # basic information for table

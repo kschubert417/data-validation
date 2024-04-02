@@ -1,8 +1,14 @@
 import os
+from tables.masterfile import masterfile
+from tables.product_family import product_family
 
 from tables import dbsetup
-from tables import masterfile, product_family
+# from tables import masterfile, product_family
+'''from tables.masterfile import *
+from tables.product_family import *'''
 
+mf = masterfile()
+pf = product_family()
 # print(os.listdir())
 # print(os.getcwd())
 # print(os.path.join(os.getcwd(), 'app', 'MOCK_DATA.csv'))
@@ -13,12 +19,12 @@ dbfile = os.path.join(os.getcwd(), 'app', 'schema.db')
 
 dbsetup.cleardb(dbfile)
 dbsetup.dbsetup(dbfile)
+
+mf.createtable(dbfile)
+pf.createtable(dbfile)
+
+mf.insertdata(mf, dbfile)
+pf.insertdata(prodfam, dbfile)
 '''
-masterfile.createtable(dbfile)
-product_family.createtable(dbfile)
-
-masterfile.insertdata(mf, dbfile)
-product_family.insertdata(prodfam, dbfile)
-
 masterfile.basiccheck(dbfile)
 '''
