@@ -100,8 +100,8 @@ class masterfile:
         cur = con.cursor()
 
         # sql statements to execute
-        sql = [sqlgen.pkcheck(mf.tblname, mf.pk, "Duplicate item number"),
-            sqlgen.checkvalues(mf.tblname, mf.av)]
+        sql = [sqlgen.pkcheck(self.tblname, self.pk, "Duplicate item number"),
+            sqlgen.checkvalues(self.tblname, self.av)]
 
         # print(sql)
         # print(len(sql))
@@ -127,6 +127,7 @@ class masterfile:
                 f'LEFT JOIN {self.fk[key][0]} ON {self.tblname}.{key} = {self.fk[key][0]}.{self.fk[key][1]}\n' +
                 f'WHERE {self.fk[key][0]}.{self.fk[key][1]} IS NULL')
 
+            cur.execute(sql)
             con.commit()
             con.close()
         return 'foreign keys checked'
@@ -173,7 +174,7 @@ if __name__ == "__main__":
     # running functions
     print("--SQL SCRIPT TO CREATE TABLE =====================")
     print(mf.createtable(dbfile))
-    
+
     print("\n--SQL SCRIPT TO INSERT DATA =====================")
     print(mf.insertdata(filename, dbfile))
 
