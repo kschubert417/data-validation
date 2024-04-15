@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CSV Column Form</title>
+</head>
+<body>
+    <h1>Form with CSV Columns</h1>
+    <form>
+        {% for column in column_names %}
+            <label>{{ column }}</label><br>
+            <select name="{{ column }}">
+                <option value="primary_key">Primary Key</option>
+                <option value="foreign_key">Foreign Key</option>
+                <option value="normal_field" selected>Normal Field</option>
+            </select><br><br>
+        {% endfor %}
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
