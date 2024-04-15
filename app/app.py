@@ -28,6 +28,6 @@ pf.createtable(dbfile)
 
 mf.insertdata(mf_data, dbfile)
 pf.insertdata(prodfam, dbfile)
-'''
-masterfile.basiccheck(dbfile)
-'''
+
+mf.basiccheck(dbfile)
+mf.fkcheck(dbfile)
