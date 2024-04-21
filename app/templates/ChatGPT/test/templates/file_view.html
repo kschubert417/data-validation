@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>View Files</title>
+</head>
+<body>
+    <h1>Files</h1>
+    {% if files %}
+        <ul>
+        {% for file in files %}
+            <li><a href="{{ url_for('view_file', filename=file) }}">{{ file }}</a></li>
+        {% endfor %}
+        </ul>
+    {% elif columns %}
+        <h2>Columns in {{ filename }}</h2>
+        <ul>
+        {% for column in columns %}
+            <li>{{ column }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>
