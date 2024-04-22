@@ -1,0 +1,28 @@
+<html>
+  <head>
+    <title>Table to Select Data Files for Data Checker</title>
+  </head>
+  <style>
+    table,
+    th,
+    td {
+      border: 1px solid black;
+    }
+  </style>
+  <body>
+    <table>
+      <tr>
+        <th>File</th>
+        <th>Table Name</th>
+        <th>Table Config</th>
+      </tr>
+      {% for table in tables %}
+      <tr>
+        <td>{{ table }}</td>
+        <td>Table_{{ table }}</td>
+        <td>Config_{{ table }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </body>
+</html>

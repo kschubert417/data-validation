@@ -27,5 +27,11 @@ def index():
 
     return render_template('index.html')
 
+@app.route('/newindex', methods=['GET', 'POST'])
+def newindex():
+    tables = ['MASTERFILE', 'PRODFAM']
+
+    return render_template('newindex.html', tables=tables)
+
 if __name__ == '__main__':
     app.run(debug=True)
