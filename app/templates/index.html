@@ -1,16 +1,17 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>CSV File Form</title>
-  </head>
-  <body>
-    <h1>Upload CSV File</h1>
-    {% if error %}
-    <p>{{ error }}</p>
-    {% endif %}
-    <form method="POST" enctype="multipart/form-data">
-      <input type="file" name="file" accept=".csv" /><br /><br />
-      <button type="submit">Upload</button>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Upload Files</title>
+</head>
+
+<body>
+    <h1>Upload CSV Files</h1>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="file[]" multiple>
+        <input type="submit" value="Upload">
     </form>
-  </body>
+</body>
+
 </html>

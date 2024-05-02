@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>HELLO Form Settings</title>
+</head>
+
+<body>
+
+    <h1>Form Settings{{file_name}}</h1>
+    <!-- Form content here -->
+    <!--Notes:
+        Could use table name passed into template
+        -->
+    <h1>Form with CSV Columns</h1>
+    <form method="POST" action="/submit?file={{file_name}}">
+        {% for column in column_names %}
+        <label>{{ column }}</label><br />
+        <div>
+            <select name="foreignkey_column_{{ column }}" class="column-select">
+                {% for column_key in col_names%}
+                <option value="normal_field">{{column_key}}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <br /><br />
+        {% endfor %}
+
+        <button type="submit">Submit</button>
+    </form>
+</body>
+
+
+
+<script>
+    // Get all select elements with the class "select-control"
+    var selects = document.querySelectorAll(".select-control");
+
+    selects.forEach(function (select) {
+        select.addEventListener("change", function () {
+            var singleTextboxContainer = this.nextElementSibling.nextElementSibling;
+            var doubleTextboxContainer = this.nextElementSibling;
+
+            // Hide both initially
+            singleTextboxContainer.style.display = "none";
+            doubleTextboxContainer.style.display = "none";
+
+            // Check the selected option and show the relevant container
+            if (this.value === "foreign_key") {
+                doubleTextboxContainer.style.display = "inline-block";
+            } else if (this.value === "allowed_values") {
+                singleTextboxContainer.style.display = "inline-block";
+            }
+        });
+    });
+
+    // Initialize on load
+    window.onload = function () {
+        selects.forEach(function (select) {
+            var singleTextboxContainer =
+                select.nextElementSibling.nextElementSibling;
+            var doubleTextboxContainer = select.nextElementSibling;
+
+            // Initial visibility based on current option selected
+            if (select.value === "foreign_key") {
+                doubleTextboxContainer.style.display = "inline-block";
+            } else if (select.value === "allowed_values") {
+                singleTextboxContainer.style.display = "inline-block";
+            } else {
+                singleTextboxContainer.style.display = "none";
+                doubleTextboxContainer.style.display = "none";
+            }
+        });
+    };
+</script>
+
+</html>

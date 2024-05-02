@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Files</title>
+</head>
+<style>
+    table,
+    th,
+    td {
+        border: 1px solid black;
+    }
+</style>
+<body>
+    <h1>Manage Files</h1>
+    <table>
+        <tr>
+            <th>File</th>
+            <th>Table Name</th>
+            <th>Setting</th>
+        </tr>
+        {% for file in files %}
+        <tr>
+            <td>{{ file }}</td>
+           <!-- <td><input type="text" value="{{ file }}" onchange="updateTableName(this, '{{ file }}')"></td> -->
+            <td> 
+                <select> 
+                    <option value="masterfile">masterfile </option>
+                    <option value="prodfam"> prodfam </option>
+                </select>
+            </td>
+            <td><a href="/forms?file={{ file }}">Settings</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+    <script>
+    function updateTableName(input, originalFileName) {
+        console.log("Update table name to:", input.value);
+        // Update the href attribute of the link in the 'Settings' column
+        let link = input.closest('tr').querySelector('a');
+        link.href = '/forms?file=' + encodeURIComponent(input.value);
+    }
+    </script>
+
+</body>
+
+</html>
