@@ -15,10 +15,6 @@
     <h1>Form Settings:</h1>
     <h2>File: {{ file_name }}</h2>
     <h2>Table: {{ table_name }}</h2>
-    <!-- Form content here -->
-    <!--Notes:
-        Could use table name passed into template
-        -->
     <h2>Column Mapping</h2>
     <form method="POST" action="/submit?file={{file_name}}">
       <table>
@@ -40,21 +36,6 @@
         </tr>
         {% endfor %}
       </table>
-
-      <!--
-      {% for column in column_names %}
-      <label>{{ column }}</label><br />
-      <div>
-        <select name="foreignkey_column_{{ column }}" class="column-select">
-          {% for column_key in col_names%}
-          <option value="normal_field">{{column_key}}</option>
-          {% endfor %}
-        </select>
-      </div>
-
-      <br /><br />
-      {% endfor %}
-      -->
       <button type="submit">Submit</button>
     </form>
   </body>

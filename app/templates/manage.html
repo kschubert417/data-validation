@@ -22,45 +22,35 @@
       {% for file in files %}
       <tr>
         <td>{{ file }}</td>
-        <!-- <td><input type="text" value="{{ file }}" onchange="updateTableName(this, '{{ file }}')"></td> -->
         <td>
-          <select id="tableSelect" onchange="updateLink()">
+          <select class="tableSelect" onchange="updateLink(this)">
             <option file="{{ file }}" value="" selected disabled hidden>
               Choose Table
             </option>
-            <option file="{{ file }}" value="masterfile">masterfile</option>
-            <option file="{{ file }}" value="prodfam">prodfam</option>
+            <option file="{{ file }}" value="MASTERFILE">masterfile</option>
+            <option file="{{ file }}" value="PRODFAM">prodfam</option>
           </select>
         </td>
-        <!--<td><a href="/forms?file={{ file }}">Settings</a></td>-->
-        <td><a href="/forms?file={{ file }}" id="settingsLink">Settings</a></td>
+        <td>
+          <a href="/forms?file={{ file }}" class="settings-link">Settings</a>
+        </td>
       </tr>
       {% endfor %}
     </table>
     <script>
-      //function updateTableName(input, originalFileName) {
-      //  console.log("Update table name to:", input.value);
-      // Update the href attribute of the link in the 'Settings' column
-      // let link = input.closest("tr").querySelector("a");
-      // link.href = "/forms?file=" + encodeURIComponent(input.value);
-      // }
-      // appending table in dropdwon to file
-      var i = 1;
-      // Function to update link with table name from Table Name options
-      function updateLink() {
-        var table = document.getElementById("tableSelect").value;
-        var link = document.getElementById("settingsLink");
-        if (i === 1) {
-          link.href += "&table=" + table; // Append table parameter
-          console.log(link.href);
-        } else {
-          // Cut off everything after "table=" or script will keep appending table tags
-          var index = link.href.indexOf("&table=");
-          link.href = link.href.substring(0, index);
-          link.href += "&table=" + table; // Append table parameter
-          // console.log(link.href);
-        }
-        i += 1;
+      function updateLink(selectElement) {
+        const table = selectElement.value;
+        const link = selectElement
+          .closest("tr")
+          .querySelector(".settings-link");
+        const url = new URL(link.href);
+
+        // Remove existing 'table' query parameter if present
+        url.searchParams.delete("table");
+        // Add new 'table' parameter
+        url.searchParams.append("table", table);
+        link.href = url.toString();
+        console.log(link.href);
       }
     </script>
   </body>
