@@ -1,48 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Manage Files</title>
-</head>
-<style>
+  </head>
+  <style>
     table,
     th,
     td {
-        border: 1px solid black;
+      border: 1px solid black;
     }
-</style>
-<body>
+  </style>
+  <body>
     <h1>Manage Files</h1>
     <table>
-        <tr>
-            <th>File</th>
-            <th>Table Name</th>
-            <th>Setting</th>
-        </tr>
-        {% for file in files %}
-        <tr>
-            <td>{{ file }}</td>
-           <!-- <td><input type="text" value="{{ file }}" onchange="updateTableName(this, '{{ file }}')"></td> -->
-            <td> 
-                <select> 
-                    <option value="masterfile">masterfile </option>
-                    <option value="prodfam"> prodfam </option>
-                </select>
-            </td>
-            <td><a href="/forms?file={{ file }}">Settings</a></td>
-        </tr>
-        {% endfor %}
+      <tr>
+        <th>File</th>
+        <th>Table Name</th>
+        <th>Setting</th>
+      </tr>
+      {% for file in files %}
+      <tr>
+        <td>{{ file }}</td>
+        <!-- <td><input type="text" value="{{ file }}" onchange="updateTableName(this, '{{ file }}')"></td> -->
+        <td>
+          <select id="tableSelect" onchange="updateLink()">
+            <option file="{{ file }}" value="" selected disabled hidden>
+              Choose Table
+            </option>
+            <option file="{{ file }}" value="masterfile">masterfile</option>
+            <option file="{{ file }}" value="prodfam">prodfam</option>
+          </select>
+        </td>
+        <!--<td><a href="/forms?file={{ file }}">Settings</a></td>-->
+        <td><a href="/forms?file={{ file }}" id="settingsLink">Settings</a></td>
+      </tr>
+      {% endfor %}
     </table>
     <script>
-    function updateTableName(input, originalFileName) {
-        console.log("Update table name to:", input.value);
-        // Update the href attribute of the link in the 'Settings' column
-        let link = input.closest('tr').querySelector('a');
-        link.href = '/forms?file=' + encodeURIComponent(input.value);
-    }
+      //function updateTableName(input, originalFileName) {
+      //  console.log("Update table name to:", input.value);
+      // Update the href attribute of the link in the 'Settings' column
+      // let link = input.closest("tr").querySelector("a");
+      // link.href = "/forms?file=" + encodeURIComponent(input.value);
+      // }
+      // appending table in dropdwon to file
+      var i = 1;
+      // Function to update link with table name from Table Name options
+      function updateLink() {
+        var table = document.getElementById("tableSelect").value;
+        var link = document.getElementById("settingsLink");
+        if (i === 1) {
+          link.href += "&table=" + table; // Append table parameter
+          console.log(link.href);
+        } else {
+          // Cut off everything after "table=" or script will keep appending table tags
+          var index = link.href.indexOf("&table=");
+          link.href = link.href.substring(0, index);
+          link.href += "&table=" + table; // Append table parameter
+          // console.log(link.href);
+        }
+        i += 1;
+      }
     </script>
-
-</body>
-
+  </body>
 </html>

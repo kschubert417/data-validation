@@ -5,10 +5,14 @@ import pandas as pd
 app = Flask(__name__)
 
 # Folder where uploaded files will be stored
-UPLOAD_FOLDER = 'data'
+# YASH NOTE: HERE IS WHERE I HAD TO CHANGE THE FILE PATH FOR UPLOADS FOLDER
+# IF YOU RUN INTO ISSUES JUST CHANGE IT BACK TO YOUR FOLDER
+# UPLOAD_FOLDER = 'uploads'
+UPLOAD_FOLDER = os.path.join(os.getcwd(), 'app', 'templates', 'ChatGPT', 'test', 'uploads')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['TABLE_CONFIG'] = {'masterfile':['item', 'description', 'ítem_type', 'prodfma']}
 
+print(app.config['UPLOAD_FOLDER'])
 
 def get_column_names(csv_file):
     df = pd.read_csv(csv_file)
@@ -38,11 +42,13 @@ def manage():
 def forms():
     file_name = request.args.get('file', default=None)  # Get file name from query parameter
     print(file_name)
+    table_name = request.args.get('table', default=None)
+    print(f'TABLE NAME: {table_name}')
     if file_name:
         pathcsv = os.path.join(app.config['UPLOAD_FOLDER'],file_name)
         column_names = get_column_names(pathcsv)
         # Perform operations with file_name if needed
-        return render_template('forms.html', file_name=file_name, column_names = column_names)
+        return render_template('forms.html', file_name=file_name, table_name=table_name, column_names=column_names, db_column_names=app.config['TABLE_CONFIG'][table_name])
     else:
         return "No file selected!", 400  # Or handle the case where no file name is provided
 
