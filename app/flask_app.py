@@ -1,16 +1,22 @@
-from flask import Flask, render_template, request, redirect, url_for, send_from_directory
+from flask import Flask, render_template, request, redirect, url_for, send_from_directory, session
 import os
 import pandas as pd
 
 app = Flask(__name__)
 
+# app.config['SECRET_KEY'] = 'your-secret-key
+# app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)
+
 # Folder where uploaded files will be stored
-print(os.getcwd())
 upload_folder = os.path.join(os.getcwd(), 'app', 'static', 'uploads')
-print(upload_folder)
 app.config['UPLOAD_FOLDER'] = upload_folder
 app.config['TABLE_CONFIG'] = {'MASTERFILE':['ITEM', 'DESCRIPTION', 'ITEM_TYPE', 'PRODFAM'],
                               'PRODFAM':['PRODFAM', 'DESCRIPTION']}
+
+'''
+session['files'] = {'masterdata.csv':{'MASTERFILE':[]},
+                    'prodfam.csv':{'PRODFAM':[]}}
+'''
 
 def get_column_names(csv_file):
     df = pd.read_csv(csv_file)
