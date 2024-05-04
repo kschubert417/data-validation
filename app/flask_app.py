@@ -5,8 +5,9 @@ import pandas as pd
 app = Flask(__name__)
 
 # Folder where uploaded files will be stored
-# print(os.getcwd())
-upload_folder = os.path.join(os.getcwd(), 'static', 'uploads')
+print(os.getcwd())
+upload_folder = os.path.join(os.getcwd(), 'app', 'static', 'uploads')
+print(upload_folder)
 app.config['UPLOAD_FOLDER'] = upload_folder
 app.config['TABLE_CONFIG'] = {'MASTERFILE':['ITEM', 'DESCRIPTION', 'ITEM_TYPE', 'PRODFAM'],
                               'PRODFAM':['PRODFAM', 'DESCRIPTION']}
@@ -42,7 +43,7 @@ def forms():
     table_name = request.args.get('table', default=None)
     # print(f'TABLE NAME: {table_name}')
     if file_name:
-        pathcsv = os.path.join(app.config['UPLOAD_FOLDER'],file_name)
+        pathcsv = os.path.join(app.config['UPLOAD_FOLDER'], file_name)
         column_names = get_column_names(pathcsv)
         # Perform operations with file_name if needed
         return render_template('forms.html', file_name=file_name, table_name=table_name, column_names=column_names, db_column_names=app.config['TABLE_CONFIG'][table_name])

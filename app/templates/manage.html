@@ -4,13 +4,12 @@
     <meta charset="UTF-8" />
     <title>Manage Files</title>
   </head>
-  <style>
-    table,
-    th,
-    td {
-      border: 1px solid black;
-    }
-  </style>
+  <style></style>
+  <link
+    rel="stylesheet"
+    type="text/css"
+    href="{{ url_for('static',filename='styles/style.css') }}"
+  />
   <body>
     <h1>Manage Files</h1>
     <table>
@@ -37,21 +36,6 @@
       </tr>
       {% endfor %}
     </table>
-    <script>
-      function updateLink(selectElement) {
-        const table = selectElement.value;
-        const link = selectElement
-          .closest("tr")
-          .querySelector(".settings-link");
-        const url = new URL(link.href);
-
-        // Remove existing 'table' query parameter if present
-        url.searchParams.delete("table");
-        // Add new 'table' parameter
-        url.searchParams.append("table", table);
-        link.href = url.toString();
-        console.log(link.href);
-      }
-    </script>
+    <script src="{{ url_for('static', filename='/js/script.js') }}"></script>
   </body>
 </html>

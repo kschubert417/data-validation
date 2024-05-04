@@ -4,13 +4,12 @@
     <meta charset="UTF-8" />
     <title>HELLO Form Settings</title>
   </head>
-  <style>
-    table,
-    th,
-    td {
-      border: 1px solid black;
-    }
-  </style>
+  <style></style>
+  <link
+    rel="stylesheet"
+    type="text/css"
+    href="{{ url_for('static',filename='styles/style.css') }}"
+  />
   <body>
     <h1>Form Settings:</h1>
     <h2>File: {{ file_name }}</h2>
@@ -39,6 +38,5 @@
       <button type="submit">Submit</button>
     </form>
   </body>
-
   <script></script>
 </html>

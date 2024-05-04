@@ -1,8 +1,0 @@
-.textbox-container {
-    display: none; /* Initially hide all text boxes */
-    vertical-align: middle; /* Align vertically if needed */
-}
-/* Use inline-block for alignment on the same line */
-.select-control, .textbox-container {
-    display: inline-block;
-}
