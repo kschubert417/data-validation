@@ -1,5 +1,36 @@
 import sqlite3
 
+# function to map data by finding the db table each file represents
+def mapdata(dbfile, data):
+    '''
+    data argument like: 
+    data = {'masterdata.csv':{'MASTERFILE':['item', 'type', 'desc']},
+                    'prodfam.csv':{'PRODFAM':['family', 'desc']}}  
+    '''
+    for file in data:
+        filename = file
+        # print(data[file])
+        for dbtable in data[file]:
+            dbtn = dbtable
+            '''print(data[file][dbtable])
+            print(len(data[file][dbtable]))'''
+        # print(f"File name: {file} | DB Table: {dbtn}")
+        con = sqlite3.connect(dbfile)
+        cur = con.cursor()
+
+        sql = f"""INSERT INTO CONFIG_FILEMAP ([FILE], [DB_TABLE])
+                    VALUES ({filename}, {dbtn})
+                """
+
+        cur.execute(sql)
+
+        con.commit()
+        con.close()
+
+  
+
+mapdata(data)
+
 # Clear all tables from database
 def cleardb(dbfile):
     """Short summary.
@@ -57,7 +88,16 @@ def dbsetup(dbfile):
            [COLUMN]     VARCHAR (200), -- column within table
            [MESSAGE]    VARCHAR (200), -- column from table this column references (IE: item would reference item master)
            [COUNT]      INT) -- count of errors
-           ''']
+           ''',
+           '''CREATE TABLE IF NOT EXISTS CONFIG_FILEMAP (
+           [FILE]       VARCHAR (200), -- name of file
+           [DB_TABLE]   VARCHAR (200), -- database table that file is mapped to
+           ''',
+           '''CREATE TABLE IF NOT EXISTS CONFIG_COLUMNMAP (
+           [DB_TABLE]      VARCHAR (200), -- database table
+           [DB_COLUMN]     VARCHAR (200), -- database column that file is mapped to
+           '''
+           ]
 
     for statement in sql:
         cur.execute(statement)
