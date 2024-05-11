@@ -5,7 +5,7 @@ def mapdata(dbfile, data):
     '''
     data argument like: 
     data = {'masterdata.csv':{'MASTERFILE':['item', 'type', 'desc']},
-                    'prodfam.csv':{'PRODFAM':['family', 'desc']}}  
+            'prodfam.csv':{'PRODFAM':['family', 'desc']}}  
     '''
     for file in data:
         filename = file
@@ -27,9 +27,40 @@ def mapdata(dbfile, data):
         con.commit()
         con.close()
 
-  
+# mapdata(data)
 
-mapdata(data)
+def getmaps(dbfile):
+    # dictionary to hold metadata
+    mappings = {}
+
+    columnmap = "SELECT FILE, DB_TABLE, DB_COLUMN, FILE_COLUMN FROM CONFIG_COLUMNMAP"
+
+    # getting files that map to certain db tables
+    conn = sqlite3.connect(dbfile)
+    cur = conn.cursor()
+    cur.execute(columnmap)
+    rows = cur.fetchall()
+    conn.close()
+
+    filemap = {}
+    for file, dbtable, dbcol, filecol in rows:
+        # print(f'File: {file} | DB Table: {dbtable} | DB Column: {dbcol} | File Col: {filecol}')
+        # Generates dict like the following to map the database to the files 
+        #                         {DBTABLE: {'file': 'file1.csv', 'cols': {'DBCOL': 'FILECOL'}},
+        #                       MASTERFILE: {'file': 'MASTERFILE.csv', 'cols': {'ITEM': 'item', 'DESC': 'desc', 'TYPE': 'type'}}}
+        try:
+            filemap[dbtable]
+        except KeyError:
+            # If DB not present do this
+            print("IS NOT THERE")
+            filemap[dbtable] = {'file': file, 'cols': {dbcol: filecol}}
+        else:
+            # if DB present do this
+            print("IS THERE")
+            filemap[dbtable]['cols'][dbcol] = filecol
+    print('\n\n', filemap)
+    return filemap
+
 
 # Clear all tables from database
 def cleardb(dbfile):
@@ -89,18 +120,24 @@ def dbsetup(dbfile):
            [MESSAGE]    VARCHAR (200), -- column from table this column references (IE: item would reference item master)
            [COUNT]      INT) -- count of errors
            ''',
-           '''CREATE TABLE IF NOT EXISTS CONFIG_FILEMAP (
-           [FILE]       VARCHAR (200), -- name of file
-           [DB_TABLE]   VARCHAR (200), -- database table that file is mapped to
-           ''',
            '''CREATE TABLE IF NOT EXISTS CONFIG_COLUMNMAP (
+           [FILE]          VARCHAR (200), -- file name
            [DB_TABLE]      VARCHAR (200), -- database table
-           [DB_COLUMN]     VARCHAR (200), -- database column that file is mapped to
+           [DB_COLUMN]     VARCHAR (200), -- database columm
+           [FILE_COLUMN]   VARCHAR (200)) -- database column that file is mapped to
            '''
            ]
 
     for statement in sql:
+        # print(statement)
         cur.execute(statement)
 
     con.commit()
     con.close()
+
+if __name__ == "__main__":
+    dbfile = 'app\schema.db'
+
+    # cleardb(dbfile)
+    # dbsetup(dbfile)
+    getmaps(dbfile)
