@@ -13,3 +13,4 @@ function updateLink(selectElement) {
     link.href = url.toString();
     console.log(link.href);
   }
+

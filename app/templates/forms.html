@@ -21,7 +21,7 @@
           <th>File Column Name</th>
           <th>DB Column Name</th>
         </tr>
-        {% for column in column_names %}
+        {% for column in metadata[file_name]['column_names'] %}
         <tr>
           <td>{{ column }}</td>
           <td>
