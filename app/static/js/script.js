@@ -14,3 +14,28 @@ function updateLink(selectElement) {
     console.log(link.href);
   }
 
+document.getElementById('myForm').addEventListener('save', function (event) {
+  event.preventDefault();
+
+  var formData = new FormData(event.target);
+  var data = {};
+
+  formData.forEach(function (value, key) {
+    data[key] = value;
+  });
+
+  fetch('/save?file={{ file_name }}', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+});

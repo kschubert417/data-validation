@@ -1,5 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Manage Files</title>
+</head>
+<style></style>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}" />
+
+<body>
+  <h1>Manage Files</h1>
+  <table>
+    <tr>
+      <th>File</th>
+      <th>Table Name</th>
+      <th>Setting</th>
+    </tr>
+    {% for file in files %}
+    <tr>
+      <td>{{ file }}</td>
+      <td>
+        <select class="tableSelect" onchange="updateLink(this)" required>
+          <option file="{{ file }}" value="" selected disabled hidden>
+            Choose Table
+          </option>
+          <option file="{{ file }}" value="MASTERFILE">masterfile</option>
+          <option file="{{ file }}" value="PRODFAM">prodfam</option>
+        </select>
+      </td>
+      <td>
+        <a href="/forms?file={{ file }}" class="settings-link">Settings</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+<!--
+<!DOCTYPE html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <title>Manage Files</title>
@@ -36,6 +89,7 @@
       </tr>
       {% endfor %}
     </table>
-    <script src="{{ url_for('static', filename='/js/script.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
   </body>
 </html>
+-->

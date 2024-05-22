@@ -1,5 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Form Settings</title>
+</head>
+<style></style>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/style.css') }}" />
+
+<body>
+  <h1>Form Settings:</h1>
+  <h2>File: {{ file_name }}</h2>
+  <h2>Table: {{ table_name }}</h2>
+  <h2>Column Mapping</h2>
+  <form id="myForm" method="POST" action="/save?file={{ file_name }}">
+    <table>
+      <tr>
+        <th>File Column Name</th>
+        <th>DB Column Name</th>
+      </tr>
+      {% for column in metadata[file_name]['column_names'] %}
+      <tr>
+        <td>{{ column }} </td>
+        <td>
+          <select name="{{column}}" required>
+            {% if metadata[file_name]['column_mapping'] == {} %}
+            <option value="" selected disabled hidden>Choose Table</option>
+            {% else %}
+            <option value="{{metadata[file_name]['column_mapping'][column]}}" >{{metadata[file_name]['column_mapping'][column]}}</option>
+            {% endif %}
+            {% for dbcolumn in db_column_names %}
+            <option value="{{ dbcolumn }}">{{ dbcolumn }}</option>
+            
+            {% endfor %}
+          </select>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+    <button type="Save">Save</button>
+  </form>
+  <noscript>
+    <p>JavaScript is disabled in your browser. The form will be submitted without additional validation.</p>
+  </noscript>
+</body>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--
+<!DOCTYPE html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <title>Form Settings</title>
@@ -15,7 +79,7 @@
     <h2>File: {{ file_name }}</h2>
     <h2>Table: {{ table_name }}</h2>
     <h2>Column Mapping</h2>
-    <form method="POST" action="/submit?file={{ file_name }}">
+    <form id="myForm" method="POST" action="/submit?file={{ file_name }}">
       <table>
         <tr>
           <th>File Column Name</th>
@@ -38,5 +102,30 @@
       <button type="submit">Submit</button>
     </form>
   </body>
-  <script></script>
+  <script>
+    document.getElementById('myForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        var formData = new FormData(event.target);
+        var data = {};
+
+        for (var pair of formData.entries()) {
+          data[pair[0]] = pair[1];
+        }
+
+        fetch('/submit?file={{ file_name }}', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        }).then(function (response) {
+          return response.json();
+        }).then(function (data) {
+          console.log(data);
+        });
+      });
+  </script>
 </html>
+
+-->
