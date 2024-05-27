@@ -159,7 +159,9 @@ def validate():
 
 @app.route('/table_error', methods=['GET'])
 def table_error():
-    return dbsetup.specific_table_errors(dbfile, request.args.get("table", default=None))
+    table = request.args.get("table", default=None)
+    error_data = dbsetup.specific_table_errors(dbfile, table)
+    return render_template('table_stats.html', error_data=error_data, table=table)
 
 
 if __name__ == '__main__':

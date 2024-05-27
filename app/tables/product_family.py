@@ -49,7 +49,8 @@ class product_family:
         cur = con.cursor()
         
         sql = [sqlgen.droptable(self.tblname),
-            sqlgen.createtable(self.tblname, self.tblcols)]
+               sqlgen.createtable(self.tblname, self.tblcols),
+               sqlgen.createerrortable(self.tblname, self.tblcols)]
 
         for statement in sql:
             cur.execute(statement)
@@ -96,7 +97,8 @@ class product_family:
         cur = con.cursor()
 
         # sql statements to execute
-        sql = [sqlgen.pkcheck(self.tblname, self.pk, "Duplicate primary key")]
+        sql = []
+        sql = sql + sqlgen.pkcheck(self.tblname, self.pk, "Duplicate primary key")
             #sqlgen.checkvalues(self.tblname, self.av)]
 
         # print(sql)

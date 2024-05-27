@@ -59,17 +59,8 @@ class masterfile:
         cur = con.cursor()
 
         sql = [sqlgen.droptable(self.tblname),
-            sqlgen.createtable(self.tblname, self.tblcols),
-            """CREATE TABLE MASTERFILE_ERRORS (
-                ITEM        VARCHAR (200),
-                DESCRIPTION VARCHAR (200),
-                ITEM_TYPE   VARCHAR (200),
-                PRODFAM     VARCHAR (200),
-                ERROR     CHAR (500) 
-            );
-            """,
-            """INSERT INTO MASTERFILE_ERRORS (ITEM, description, item_type, prodfam, error)
-            values ('ITEM_123', 'DESC', '0', 'FAM', 'ERROR MESSAGE')"""]
+               sqlgen.createtable(self.tblname, self.tblcols),
+               sqlgen.createerrortable(self.tblname, self.tblcols)]
 
         for statement in sql:
             cur.execute(statement)
@@ -115,13 +106,15 @@ class masterfile:
         cur = con.cursor()
 
         # sql statements to execute
-        sql = [sqlgen.pkcheck(self.tblname, self.pk, "Duplicate primary key"),
-            sqlgen.checkvalues(self.tblname, self.av)]
+        sql = []
+        sql = sql +\
+            sqlgen.pkcheck(self.tblname, self.pk, "Duplicate primary key") +\
+            sqlgen.checkvalues(self.tblname, self.av)
 
         # print(sql)
         # print(len(sql))
         for row in sql:
-            # print(row)
+            print(row)
             cur.execute(row)
         
         con.commit()

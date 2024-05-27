@@ -119,14 +119,7 @@ def dbsetup(dbfile):
            [COLUMN]     VARCHAR (200), -- column within table
            [MESSAGE]    VARCHAR (200), -- column from table this column references (IE: item would reference item master)
            [COUNT]      INT) -- count of errors
-           ''',
-           '''CREATE TABLE IF NOT EXISTS ERRORS (
-           [TABLE]          VARCHAR (200), -- file name
-           [COLUMN]      VARCHAR (200), -- database table
-           [DB_COLUMN]     VARCHAR (200), -- database columm
-           [FILE_COLUMN]   VARCHAR (200)) -- database column that file is mapped to
-           '''
-           ]
+           ''']
 
     for statement in sql:
         # print(statement)
