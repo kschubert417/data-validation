@@ -60,11 +60,15 @@ class product_family:
         return 'Prodfam Table Created'
 
     #-------------------------------------------------------------------------------
-    def insertdata(self, filename, dbfile):
+    def insertdata(self, filename, dbfile, order=None):
         con = sqlite3.connect(dbfile)
         cur = con.cursor()
 
-        sql = sqlgen.instertdata(self.tblname, self.tblcols)
+        if order == None:
+            sql = sqlgen.instertdata(self.tblname, self.tblcols)
+        else:
+            sql = sqlgen.instertdata(self.tblname, self.tblcols, order)
+            # print(sql)
         
         with open(filename) as file_obj:
             # Skip the header
@@ -92,7 +96,7 @@ class product_family:
         cur = con.cursor()
 
         # sql statements to execute
-        sql = [sqlgen.pkcheck(self.tblname, self.pk, "Duplicate item number")]
+        sql = [sqlgen.pkcheck(self.tblname, self.pk, "Duplicate primary key")]
             #sqlgen.checkvalues(self.tblname, self.av)]
 
         # print(sql)

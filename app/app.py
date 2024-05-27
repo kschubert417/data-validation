@@ -9,6 +9,7 @@ from tables.product_family import *'''
 
 mf = masterfile()
 pf = product_family()
+
 print(os.listdir())
 print(os.getcwd())
 # print(os.path.join(os.getcwd(), 'app', 'MOCK_DATA.csv'))
@@ -16,9 +17,6 @@ print(os.getcwd())
 mf_data = os.path.join(os.getcwd(), 'app', 'masterdata.csv')  
 prodfam = os.path.join(os.getcwd(), 'app', 'prodfam_data.csv')
 dbfile = os.path.join(os.getcwd(), 'app', 'schema.db')
-print(mf_data)
-print(prodfam)
-print(dbfile)
 
 dbsetup.cleardb(dbfile)
 dbsetup.dbsetup(dbfile)

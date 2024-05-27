@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Data from SQLite</title>
+  </head>
+  <body>
+    <h1>Summary of data</h1>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Table</th>
+          <th>Count of Error</th>
+          <th>Link</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in table_data %}
+        <tr>
+          <td>{{ row[0] }}</td>
+          <td>{{ row[1] }}</td>
+          <td>
+            <a href="/table_error?table={{ row[0] }}" class="link">Settings</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <h1>Summary of data</h1>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Table</th>
+          <th>Column</th>
+          <th>Message</th>
+          <th>Count</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in data %}
+        <tr>
+          <td>{{ row[0] }}</td>
+          <td>{{ row[1] }}</td>
+          <td>{{ row[2] }}</td>
+          <td>{{ row[3] }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </body>
+</html>

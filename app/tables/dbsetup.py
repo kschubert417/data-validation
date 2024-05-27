@@ -120,9 +120,9 @@ def dbsetup(dbfile):
            [MESSAGE]    VARCHAR (200), -- column from table this column references (IE: item would reference item master)
            [COUNT]      INT) -- count of errors
            ''',
-           '''CREATE TABLE IF NOT EXISTS CONFIG_COLUMNMAP (
-           [FILE]          VARCHAR (200), -- file name
-           [DB_TABLE]      VARCHAR (200), -- database table
+           '''CREATE TABLE IF NOT EXISTS ERRORS (
+           [TABLE]          VARCHAR (200), -- file name
+           [COLUMN]      VARCHAR (200), -- database table
            [DB_COLUMN]     VARCHAR (200), -- database columm
            [FILE_COLUMN]   VARCHAR (200)) -- database column that file is mapped to
            '''
@@ -134,6 +134,39 @@ def dbsetup(dbfile):
 
     con.commit()
     con.close()
+
+def table_summary_stats(dbfile):
+    con = sqlite3.connect(dbfile)
+    cur = con.cursor()
+
+    cur.execute("SELECT [TABLE], SUM([COUNT]) AS SUM FROM SUMMARY_STATS GROUP BY [TABLE]")
+    rows = cur.fetchall()
+
+    con.close()
+
+    return rows
+
+def get_summary_stats(dbfile):
+    con = sqlite3.connect(dbfile)
+    cur = con.cursor()
+
+    cur.execute("SELECT * FROM SUMMARY_STATS")
+    rows = cur.fetchall()
+
+    con.close()
+
+    return rows
+
+def specific_table_errors(dbfile, table):
+    con = sqlite3.connect(dbfile)
+    cur = con.cursor()
+
+    cur.execute(f"SELECT * FROM {table}_ERRORS")
+    rows = cur.fetchall()
+
+    con.close()
+
+    return rows
 
 if __name__ == "__main__":
     dbfile = 'app\schema.db'

@@ -14,6 +14,8 @@ function updateLink(selectElement) {
     console.log(link.href);
   }
 
+// Function to update metadata in application
+// used to make sure fields are properly stored
 document.getElementById('myForm').addEventListener('save', function (event) {
   event.preventDefault();
 

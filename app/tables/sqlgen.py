@@ -1,6 +1,10 @@
 sumstats = {"table": "SUMMARY_STATS",
             "columns": "([TABLE], [COLUMN], [MESSAGE], [COUNT])"}
 
+# table to hold specific cases where rules are violated
+sumstats2 = {"table": "SUMMARY_STATS2",
+            "columns": "([TABLE], [COLUMN], [MESSAGE], [ITEM], [VALUE])"}
+
 # SQL Builder Class, can run SQL also
 
 # Document to generate SQL scripts to be executed
@@ -56,7 +60,7 @@ def createtable(table, columns):
     # print(sql)
     return(sql)
 
-def instertdata(table, columns):
+def instertdata(table, columns, order=None):
     '''
     table: name of table
     columns: columns you want to insert data into
@@ -64,14 +68,25 @@ def instertdata(table, columns):
     value = ''
     col = ''
     n = 0
-    for i in columns:
-        if n == 0:
-            value = '(?'
-            col = str(i)
-        else:
-            value = value + ',?'
-            col = col + ',' + str(i)
-        n += 1
+    if order == None:
+        for i in columns:
+            if n == 0:
+                value = '(?'
+                col = str(i)
+            else:
+                value = value + ',?'
+                col = col + ',' + str(i)
+            n += 1
+    else:
+        for i in order:
+            if n == 0:
+                value = '(?'
+                col = str(i)
+            else:
+                value = value + ',?'
+                col = col + ',' + str(i)
+            n += 1
+
     value = value + ')'
 
     sql = f'''INSERT INTO {table} ({col})\nVALUES {value}\n'''
@@ -106,7 +121,32 @@ def checkvalues(table, av):
     # print(sql)
     return(sqlstr)
 
+def checkvalues2(table, av):
+    '''
+    table: name of table
+    av: allowed values for column, ie: item type should be 'ITEM_TYPE = (0,1,2,3,4)'
+    message: error message to provide additional information
+    '''
+    # print(f'Length of AV: {len(av)}')
+    if len(av) == 0:
+        sqlstr = ''
+    else:
+        sqlstr = ''
+        message = ''
+        for col in av:
+            message = 'INVALID ' + col + ' VALUES'
+            # print('invalid ' + col)
+            # print(av[col])
 
+            sql = (f'INSERT INTO {sumstats["table"]} {sumstats["columns"]}\n'+
+                f'SELECT \'{table}\',\'{col}\',\'{message}\', COUNT(*)\n'+
+                f'FROM {table}\n'+
+                f'WHERE {col} NOT IN {av[col]};\n\n')
+            
+            sqlstr = sqlstr + sql
+
+    # print(sql)
+    return(sqlstr)
 
     
 

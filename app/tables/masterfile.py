@@ -59,7 +59,17 @@ class masterfile:
         cur = con.cursor()
 
         sql = [sqlgen.droptable(self.tblname),
-            sqlgen.createtable(self.tblname, self.tblcols)]
+            sqlgen.createtable(self.tblname, self.tblcols),
+            """CREATE TABLE MASTERFILE_ERRORS (
+                ITEM        VARCHAR (200),
+                DESCRIPTION VARCHAR (200),
+                ITEM_TYPE   VARCHAR (200),
+                PRODFAM     VARCHAR (200),
+                ERROR     CHAR (500) 
+            );
+            """,
+            """INSERT INTO MASTERFILE_ERRORS (ITEM, description, item_type, prodfam, error)
+            values ('ITEM_123', 'DESC', '0', 'FAM', 'ERROR MESSAGE')"""]
 
         for statement in sql:
             cur.execute(statement)
@@ -71,12 +81,17 @@ class masterfile:
         
     # Insert Data
         
-    def insertdata(self,filename, dbfile):
+    def insertdata(self,filename, dbfile, order=None):
         con = sqlite3.connect(dbfile)
         cur = con.cursor()
 
-        sql = sqlgen.instertdata(self.tblname, self.tblcols)
+        if order == None:
+            sql = sqlgen.instertdata(self.tblname, self.tblcols)
+        else:
+            sql = sqlgen.instertdata(self.tblname, self.tblcols, order)
         
+        # print(sql)
+
         with open(filename) as file_obj:
             # Skip the header
             nxt = next(file_obj)
@@ -100,7 +115,7 @@ class masterfile:
         cur = con.cursor()
 
         # sql statements to execute
-        sql = [sqlgen.pkcheck(self.tblname, self.pk, "Duplicate item number"),
+        sql = [sqlgen.pkcheck(self.tblname, self.pk, "Duplicate primary key"),
             sqlgen.checkvalues(self.tblname, self.av)]
 
         # print(sql)
@@ -126,7 +141,7 @@ class masterfile:
                 f'FROM {self.tblname}\n'+
                 f'LEFT JOIN {self.fk[key][0]} ON {self.tblname}.{key} = {self.fk[key][0]}.{self.fk[key][1]}\n' +
                 f'WHERE {self.fk[key][0]}.{self.fk[key][1]} IS NULL')
-
+            print(sql)
             cur.execute(sql)
             con.commit()
             con.close()
