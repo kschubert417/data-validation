@@ -114,7 +114,7 @@ class masterfile:
         # print(sql)
         # print(len(sql))
         for row in sql:
-            print(row)
+            # print(row)
             cur.execute(row)
         
         con.commit()
@@ -134,7 +134,7 @@ class masterfile:
                 f'FROM {self.tblname}\n'+
                 f'LEFT JOIN {self.fk[key][0]} ON {self.tblname}.{key} = {self.fk[key][0]}.{self.fk[key][1]}\n' +
                 f'WHERE {self.fk[key][0]}.{self.fk[key][1]} IS NULL')
-            print(sql)
+            # print(sql)
             cur.execute(sql)
             con.commit()
             con.close()

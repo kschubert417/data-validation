@@ -39,6 +39,7 @@ def clear_metadata():
 
 def add_file_metadata(file_name, table_name, column_names):
     """Add file metadata into global dictionary."""
+    # Find way to make session, this could be shared all over place
     with metadata_lock:
         metadata[file_name] = {
             "table_name": table_name,
