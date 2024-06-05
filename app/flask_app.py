@@ -77,10 +77,15 @@ def upload_files():
     # print('---\n','metadata from "/upload"', metadata,'\n------------\n')
     return redirect(url_for('manage'))
 
+@app.route('/admin', methods=['GET'])
+def admin():
+
+    return render_template('admin.html')
+
 @app.route('/manage', methods=['GET'])
 def manage():
     files = os.listdir(app.config['UPLOAD_FOLDER'])
-    # print('metadata from "/manage"', metadata)
+    # print('PRINT METADATA \n', metadata)
     #return render_template('manage.html', files=files, )
     return render_template('manage.html', files=files, db_table_names=app.config['TABLE_CONFIG'], metadata=metadata)
 
