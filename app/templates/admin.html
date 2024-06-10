@@ -2,71 +2,33 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Manage Files</title>
+    <title>Manage Customers</title>
   </head>
   <style></style>
-  <link
-    rel="stylesheet"
-    type="text/css"
-    href="{{ url_for('static',filename='styles/style.css') }}"
-  />
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}"/>
 
   <body>
-    <h1>Manage Files</h1>
+    <h1>Admin Home Page</h1>
+    <h2>Customers</h2>
     <table>
       <tr>
-        <th>File</th>
-        <th>Table Name</th>
-        <th>Setting</th>
+        <th>Customer Name</th>
+        <th>Software provider</th>
+        <th>Link to Manage</th>
       </tr>
-      {% for file in files %}
       <tr>
-        <td>{{ file }}</td>
+        <td><input type="text" placeholder="Enter Customer Name"></td>
         <td>
-          <!--<select class="tableSelect" onchange="updateLink(this)" required>
-            <option file="{{ file }}" value="" selected disabled hidden>
-              Choose Table
-            </option>
-            {% for table in db_table_names %}
-            <option file="{{ file }}" value="{{table}}">{{table}}</option>
-            {% endfor %}
-          </select>
-          Trying to find new way to hand select statement-->
-
-          <select class="tableSelect" onchange="updateLink(this)" required>
-            {% if metadata[file]['table_name'] == None %}
-            <option file="{{ file }}" value="" selected disabled hidden>
-              Choose Table
-            </option>
-            {% else %}
-            <option
-              file="{{ file }}"
-              value="{{metadata[file]['table_name']}}"
-              selected
-            >
-              {{metadata[file]['table_name']}}
-            </option>
-            {% endif %} {% for dbtable in db_table_names %}
-            <option file="{{ file }}" value="{{dbtable}}">{{dbtable}}</option>
-            {% endfor %}
+          <select class="customerSelect" onchange="jsFunc(this)" required>
+            <option selected disabled hidden>Choose SW Provider</option>
+            <option value="ToolsGroup">ToolsGroup</option>
           </select>
         </td>
-        <td>
-          {% if metadata[file]['table_name'] == None %}
-          <a href="/forms?file={{ file }}" class="settings-link">Settings</a>
-          {% else %}
-          <a
-            href="/forms?file={{ file }}&table={{metadata[file]['table_name']}}"
-            class="settings-link"
-            >Settings</a
-          >
-          {% endif %}
-        </td>
+        <td><a href="/customerconfig?customer=TireHub&swvendor=ToolsGroup" class="submit">Link to manage</a></td>
       </tr>
-      {% endfor %}
     </table>
     <br /><br />
-    <a href="/validate" class="submit">SUBMIT</a>
+    <a href="/validate" class="submit">BUTTON TO ADD NEW ROW</a>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
   </body>
 </html>

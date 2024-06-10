@@ -61,6 +61,17 @@ def index():
     return render_template('index.html')
 
 
+@app.route('/admin', methods=['GET'])
+def admin():
+    return render_template('admin.html')
+
+@app.route('/customerconfig', methods=['GET', 'POST'])
+def customerconfig():
+    customer = request.args.get("customer", default=None)
+    swvendor = request.args.get("swvendor", default=None)
+    print(f"Customer: {customer} | Vendor: {swvendor}")
+    return render_template('customerconfig.html', customer=customer, swvendor=swvendor)
+
 
 @app.route('/upload', methods=['GET','POST'])
 def upload_files():
@@ -77,10 +88,7 @@ def upload_files():
     # print('---\n','metadata from "/upload"', metadata,'\n------------\n')
     return redirect(url_for('manage'))
 
-@app.route('/admin', methods=['GET'])
-def admin():
 
-    return render_template('admin.html')
 
 @app.route('/manage', methods=['GET'])
 def manage():

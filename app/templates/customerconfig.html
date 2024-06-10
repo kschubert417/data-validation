@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Manage Customers</title>
+  </head>
+  <style></style>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}"/>
+
+  <body>
+    <h1>Manage  {{ customer }} Configuration for Software Vendor {{ swvendor }}</h1>
+
+    <h2>Modules</h2>
+    <table>
+      <tr>
+        <th>Module Name</th>
+        <th>Flag</th>
+      </tr>
+      <tr>
+        <td>Demand</td>
+        <td><input type="checkbox" class="module-checkbox" name="module" data-module="Demand"></td>
+      </tr>
+      <tr>
+        <td>Fulfillment</td>
+        <td><input type="checkbox" class="module-checkbox" name="module" data-module="Fulfillment"></td>
+      </tr>
+      <tr>
+        <td>Replenishment</td>
+        <td><input type="checkbox" class="module-checkbox" name="module" data-module="Replenishment"></td>
+      </tr>
+    </table>
+
+    <h2>Tables</h2>
+    <table>
+      <tr>
+        <th>Module</th>
+        <th>Table Name</th>
+        <th>Flag</th>
+      </tr>
+      <tr>
+        <td>Demand</td>
+        <td>MASTERINFO</td>
+        <td><input type="checkbox" class="table-checkbox" name="table-Demand" data-module="Demand" data-table="MASTERINFO"></td>
+      </tr>
+      <tr>
+        <td>Demand</td>
+        <td>PRODFAM</td>
+        <td><input type="checkbox" class="table-checkbox" name="table-Demand" data-module="Demand" data-table="PRODFAM"></td>
+      </tr>
+      <tr>
+        <td>Fulfillment</td>
+        <td>ITEMLOCATION</td>
+        <td><input type="checkbox" class="table-checkbox" name="table-Fulfillment" data-module="Fulfillment" data-table="ITEMLOCATION"></td>
+      </tr>
+      <tr>
+        <td>Replenishment</td>
+        <td>OUTSORDERS</td>
+        <td><input type="checkbox" class="table-checkbox" name="table-Replenishment" data-module="Replenishment" data-table="OUTSORDERS"></td>
+      </tr>
+    </table>
+
+    <h2>Columns</h2>
+    <table>
+      <tr>
+        <th>Table Name</th>
+        <th>Column</th>
+        <th>Flag</th>
+      </tr>
+      <tr>
+        <td>MASTERINFO</td>
+        <td>ITEM</td>
+        <td><input type="checkbox" class="column-checkbox" name="column-MASTERINFO" data-table="MASTERINFO"></td>
+      </tr>
+      <tr>
+        <td>MASTERINFO</td>
+        <td>DESCRIPTION</td>
+        <td><input type="checkbox" class="column-checkbox" name="column-MASTERINFO" data-table="MASTERINFO"></td>
+      </tr>
+      <tr>
+        <td>MASTERINFO</td>
+        <td>PRODFAM</td>
+        <td><input type="checkbox" class="column-checkbox" name="column-MASTERINFO"  data-table="MASTERINFO"></td>
+      </tr>
+      <tr>
+        <td>MASTERINFO</td>
+        <td>ITEM TYPE</td>
+        <td><input type="checkbox" class="column-checkbox" name="column-MASTERINFO" data-table="MASTERINFO"></td>
+      </tr>
+      <tr>
+        <td>PRODFAM</td>
+        <td>PRODUCT FAMILY</td>
+        <td><input type="checkbox" class="column-checkbox" name="column-MASTERINFO" data-table="PRODFAM"></td>
+      </tr>
+      <tr>
+        <td>PRODFAM</td>
+        <td>DESCRIPTION</td>
+        <td><input type="checkbox" class="column-checkbox" name="column-MASTERINFO" data-table="PRODFAM"></td>
+      </tr>
+    </table>
+    <br /><br />
+    <a href="/validate" class="submit">BUTTON TO ADD NEW ROW</a>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+  </body>
+</html>
+
+<!--
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Manage Files</title>
+  </head>
+  <style></style>
+  <link
+    rel="stylesheet"
+    type="text/css"
+    href="{{ url_for('static',filename='styles/style.css') }}"
+  />
+  <body>
+    <h1>Manage Files</h1>
+    <table>
+      <tr>
+        <th>File</th>
+        <th>Table Name</th>
+        <th>Setting</th>
+      </tr>
+      {% for file in files %}
+      <tr>
+        <td>{{ file }}</td>
+        <td>
+          <select class="tableSelect" onchange="updateLink(this)">
+            <option file="{{ file }}" value="" selected disabled hidden>
+              Choose Table
+            </option>
+            <option file="{{ file }}" value="MASTERFILE">masterfile</option>
+            <option file="{{ file }}" value="PRODFAM">prodfam</option>
+          </select>
+        </td>
+        <td>
+          <a href="/forms?file={{ file }}" class="settings-link">Settings</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+  </body>
+</html>
+-->
