@@ -1,3 +1,70 @@
+// script to take data from admin page and import flags into database
+// can definitely be improved
+document.addEventListener('DOMContentLoaded', (event) => {
+  document.querySelector('.submit').addEventListener('click', function (event) {
+    event.preventDefault(); // Prevent the default action of the link
+
+    let result = {
+      info: { 'customer': customer, 'swvendor': swvendor },
+      modules: {},
+      tables: {},
+      columns: {}
+    };
+
+    // Process module checkboxes
+    document.querySelectorAll('.module-checkbox').forEach((checkbox) => {
+      let moduleName = checkbox.getAttribute('data-module');
+      result.modules[moduleName] = checkbox.checked ? 1 : 0;
+    });
+
+    // Process table checkboxes
+    document.querySelectorAll('.table-checkbox').forEach((checkbox) => {
+      let moduleName = checkbox.getAttribute('data-module');
+      let tableName = checkbox.getAttribute('data-table');
+      if (!(moduleName in result.tables)) {
+        result.tables[moduleName] = {};
+      }
+      result.tables[moduleName][tableName] = checkbox.checked ? 1 : 0;
+    });
+
+    // Process column checkboxes
+    document.querySelectorAll('.column-checkbox').forEach((checkbox) => {
+      let tableName = checkbox.getAttribute('data-table');
+      let columnName = checkbox.closest('tr').querySelector('td:nth-child(2)').textContent;
+      if (!(tableName in result.columns)) {
+        result.columns[tableName] = {};
+      }
+      result.columns[tableName][columnName] = checkbox.checked ? 1 : 0;
+    });
+
+    console.log(result);
+    // alert('Configuration updated successfully!');
+    // If you want to send this data to the server, you can use the fetch API here
+    fetch('/updatecustconfig', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(result)
+    }).then(response => {
+      if (response.ok) {
+        alert('Configuration updated successfully!');
+      } else {
+        alert('Failed to update configuration.');
+      }
+    }).catch(error => {
+      console.error('Error:', error);
+      alert('An error occurred while updating configuration.');
+    });
+  });
+});
+
+
+
+
+
+
+
 document.querySelectorAll('.module-checkbox').forEach(function (moduleCheckbox) {
   moduleCheckbox.addEventListener('change', function () {
     let module = this.dataset.module;
@@ -70,3 +137,11 @@ document.getElementById('myForm').addEventListener('save', function (event) {
       console.error('Error:', error);
     });
 });
+
+
+
+
+
+
+
+

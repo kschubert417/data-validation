@@ -28,14 +28,10 @@ app.config['UPLOAD_FOLDER'] = upload_folder
 app.config['TABLE_CONFIG'] = {'MASTERFILE':['ITEM', 'DESCRIPTION', 'ITEM_TYPE', 'PRODFAM'],
                               'PRODFAM':['PRODFAM', 'DESCRIPTION']}
 
-
-
 def clear_metadata():
     """Clear metadata dictionary."""
     with metadata_lock:
         metadata.clear()
-
-
 
 def add_file_metadata(file_name, table_name, column_names):
     """Add file metadata into global dictionary."""
@@ -60,7 +56,7 @@ def index():
     # print(app.config)
     return render_template('index.html')
 
-
+# ADMIN PAGES TO SET UP CUSTOMERS ===============================================================
 @app.route('/admin', methods=['GET'])
 def admin():
     return render_template('admin.html')
@@ -69,8 +65,42 @@ def admin():
 def customerconfig():
     customer = request.args.get("customer", default=None)
     swvendor = request.args.get("swvendor", default=None)
+    # add code to populate all modules/tables/columns in db for software vendor
     print(f"Customer: {customer} | Vendor: {swvendor}")
     return render_template('customerconfig.html', customer=customer, swvendor=swvendor)
+
+@app.route('/updatecustconfig', methods=['GET','POST'])
+def updatecustconfig():
+    data = request.get_json()
+    if data:
+        # Process the data as needed
+        # print("Received data:", data)
+        customer = data['info']['customer']
+        swvendor = data['info']['swvendor']
+        # print(f'CUSTOMER: {customer} | SWVENDOR: {swvendor}')
+        for item in data:
+            if item == 'modules':
+                # print(f'Module: {item} | Flag: {data[item]}')
+                for module in data[item]:
+                    print(f"""UPDATE ADMIN_MODULES SET FLAG = {data[item][module]} WHERE CUSTOMERID = '{customer}' AND MODULE_NAME = '{module}'""")
+            elif item == 'tables':
+                # print(f'Tables: {item} | Flag: {data[item]}')
+                for module in data[item]:
+                    # print(module)
+                    for table in data[item][module]:
+                        # print(f'Table: {table}')
+                        print(f"""UPDATE ADMIN_TABLES SET FLAG = {data[item][module][table]} WHERE CUSTOMERID = '{customer}' AND MODULE_NAME = '{module}' AND TABLE_NAME = '{table}'""")
+            elif item == 'columns':
+                # print(f'Columns: {item} | Flag: {data[item]}')
+                for table in data[item]:
+                    for column in data[item][table]:
+                        # print(f'Column: {column}')
+                        print(f"""UPDATE ADMIN_COLUMNS SET FLAG = {data[item][table][column]} WHERE CUSTOMERID = '{customer}' AND TABLE_NAME = '{table}' AND COLUMN_NAME = '{column}'""")
+        # Here, you would typically update your database with the received data
+        # For demonstration, we'll just return a success message
+        return jsonify({"message": "Configuration updated successfully!"}), 200
+    else:
+        return jsonify({"message": "No data received"}), 400
 
 
 @app.route('/upload', methods=['GET','POST'])
@@ -176,6 +206,7 @@ def table_error():
     table = request.args.get("table", default=None)
     error_data = dbsetup.specific_table_errors(dbfile, table)
     return render_template('table_stats.html', error_data=error_data, table=table)
+
 
 
 if __name__ == '__main__':

@@ -6,7 +6,6 @@
   </head>
   <style></style>
   <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}"/>
-
   <body>
     <h1>Manage  {{ customer }} Configuration for Software Vendor {{ swvendor }}</h1>
 
@@ -79,7 +78,7 @@
       <tr>
         <td>MASTERINFO</td>
         <td>PRODFAM</td>
-        <td><input type="checkbox" class="column-checkbox" name="column-MASTERINFO"  data-table="MASTERINFO"></td>
+        <td><input type="checkbox" class="column-checkbox" name="column-MASTERINFO" data-table="MASTERINFO"></td>
       </tr>
       <tr>
         <td>MASTERINFO</td>
@@ -98,9 +97,14 @@
       </tr>
     </table>
     <br /><br />
-    <a href="/validate" class="submit">BUTTON TO ADD NEW ROW</a>
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
-  </body>
+    <!--<a href="/addcustomer" class="submit">BUTTON TO ADD NEW ROW</a>-->
+    <a href="#" class="submit">BUTTON TO ADD NEW ROW</a>
+      <script type="text/javascript">
+        var customer = '{{ customer }}'
+        var swvendor = '{{ swvendor }}'
+      </script>
+      <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+  </body>  
 </html>
 
 <!--

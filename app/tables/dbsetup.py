@@ -119,6 +119,29 @@ def dbsetup(dbfile):
            [COLUMN]     VARCHAR (200), -- column within table
            [MESSAGE]    VARCHAR (200), -- column from table this column references (IE: item would reference item master)
            [COUNT]      INT) -- count of errors
+           ''',
+           '''CREATE TABLE IF NOT EXISTS ADMIN_CUSTOMERS (
+           [CUSTOMERID] VARCHAR (200), -- name of table
+           [SWPROVIDER] VARCHAR (200)) -- count of rows within table
+           ''',
+           '''CREATE TABLE IF NOT EXISTS ADMIN_MODULES (
+           [CUSTOMERID] VARCHAR (200), -- name of table
+           [SWPROVIDER] VARCHAR (200), -- count of rows within table
+           [MODULE_NAME] VARCHAR (200), -- count of rows within table
+           [FLAG] VARCHAR (2)) -- count of rows within table
+           ''',
+           '''CREATE TABLE IF NOT EXISTS ADMIN_TABLES (
+           [CUSTOMERID] VARCHAR (200), -- name of table
+           [MODULE_NAME] VARCHAR (200), -- count of rows within table
+           [TABLE_NAME] VARCHAR (200), -- count of rows within table
+           [FLAG] VARCHAR (2)) -- count of rows within table
+           ''',
+           '''CREATE TABLE IF NOT EXISTS ADMIN_COLUMNS (
+           [CUSTOMERID] VARCHAR (200), -- name of table
+           [MODULE_NAME] VARCHAR (200), -- count of rows within table
+           [TABLE_NAME] VARCHAR (200), -- count of rows within table
+           [COLUMN_NAME] VARCHAR (200), -- count of rows within table
+           [FLAG] VARCHAR (2)) -- count of rows within table
            ''']
 
     for statement in sql:
