@@ -13,60 +13,43 @@
 
   <body>
     <h1>Manage Files</h1>
-    <table>
-      <tr>
-        <th>File</th>
-        <th>Table Name</th>
-        <th>Setting</th>
-      </tr>
-      {% for file in files %}
-      <tr>
-        <td>{{ file }}</td>
-        <td>
-          <!--<select class="tableSelect" onchange="updateLink(this)" required>
-            <option file="{{ file }}" value="" selected disabled hidden>
-              Choose Table
-            </option>
-            {% for table in db_table_names %}
-            <option file="{{ file }}" value="{{table}}">{{table}}</option>
-            {% endfor %}
-          </select>
-          Trying to find new way to hand select statement-->
-
-          <select class="tableSelect" onchange="updateLink(this)" required>
+    <form action="/validate" method="get">
+      <table>
+        <tr>
+          <th>File</th>
+          <th>Table Name</th>
+          <th>Setting</th>
+        </tr>
+        {% for file in files %}
+        <tr>
+          <td>{{ file }}</td>
+          <td>
+            <select class="tableSelect" onchange="updateLink(this)" required>
+              {% if metadata[file]['table_name'] == None %}
+              <option file="{{ file }}" value="" selected disabled hidden>Choose Table</option>
+              {% else %}
+              <option file="{{ file }}" value="{{metadata[file]['table_name']}}" selected>
+                {{metadata[file]['table_name']}}
+              </option>
+              {% endif %}
+              {% for dbtable in db_table_names %}
+              <option file="{{ file }}" value="{{dbtable}}">{{dbtable}}</option>
+              {% endfor %}
+            </select>
+          </td>
+          <td>
             {% if metadata[file]['table_name'] == None %}
-            <option file="{{ file }}" value="" selected disabled hidden>
-              Choose Table
-            </option>
+            <a href="/forms?file={{ file }}" class="settings-link">Settings</a>
             {% else %}
-            <option
-              file="{{ file }}"
-              value="{{metadata[file]['table_name']}}"
-              selected
-            >
-              {{metadata[file]['table_name']}}
-            </option>
-            {% endif %} {% for dbtable in db_table_names %}
-            <option file="{{ file }}" value="{{dbtable}}">{{dbtable}}</option>
-            {% endfor %}
-          </select>
-        </td>
-        <td>
-          {% if metadata[file]['table_name'] == None %}
-          <a href="/forms?file={{ file }}" class="settings-link">Settings</a>
-          {% else %}
-          <a
-            href="/forms?file={{ file }}&table={{metadata[file]['table_name']}}"
-            class="settings-link"
-            >Settings</a
-          >
-          {% endif %}
-        </td>
-      </tr>
-      {% endfor %}
-    </table>
-    <br /><br />
-    <a href="/validate" class="submit">SUBMIT</a>
+            <a href="/forms?file={{ file }}&table={{metadata[file]['table_name']}}" class="settings-link">Settings</a>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+      <br /><br />
+      <button type="submit">SUBMIT</button>
+    </form>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
   </body>
 </html>

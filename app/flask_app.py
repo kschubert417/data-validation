@@ -163,7 +163,7 @@ def forms():
         return "No file selected!", 400  # Or handle the case where no file name is provided
 
 
-@app.route('/validate', methods=['GET'])
+@app.route('/validate', methods=['GET','POST'])
 def validate():
     dbsetup.cleardb(dbfile)
     dbsetup.dbsetup(dbfile)
